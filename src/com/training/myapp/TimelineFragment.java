@@ -26,9 +26,6 @@ public class TimelineFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		inflater.inflate(R.layout.fragment_timeline, 
-				container);
-		
 		// pongo todo null para no filtrar por nada y me traiga todo.
 		Cursor cursor = getActivity().getContentResolver().query(
 				StatusContract.CONTENT_URI,	null, null, null, null);
