@@ -35,6 +35,8 @@ public class StatusProvider extends ContentProvider {
 		
 		Log.d(TAG, "Insertado: " + values.getAsLong(StatusContract.Columns.ID));
 
+		getContext().getContentResolver().notifyChange(uri, null);
+		
 		return Uri.parse(StatusContract.CONTENT_URI + "/" + id);
 	}
 
@@ -69,6 +71,8 @@ public class StatusProvider extends ContentProvider {
 					orderBy == null ? StatusContract.ORDER_DEFAULT : orderBy);
 			break;
 		}
+		
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		
 		return cursor;
 	}

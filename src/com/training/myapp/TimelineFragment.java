@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.text.format.DateUtils;
@@ -20,25 +23,25 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TimelineFragment extends ListFragment {
+public class TimelineFragment extends ListFragment implements LoaderCallbacks<Cursor> {
+	
+	SimpleCursorAdapter adapter;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		// pongo todo null para no filtrar por nada y me traiga todo.
-		Cursor cursor = getActivity().getContentResolver().query(
-				StatusContract.CONTENT_URI,	null, null, null, null);
-		
 		// from/to: mapeo origen de datos a ID de la View de la celda.
 		String[] from = {StatusContract.Columns.USER, StatusContract.Columns.MESSAGE, StatusContract.Columns.DATE};
 		int[] to = {R.id.msg_header, R.id.msg_body, R.id.msg_time};
 		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+		getLoaderManager().initLoader(0, null, this);
+		
+		adapter = new SimpleCursorAdapter(
 				getActivity(), 
 				//android.R.layout.simple_list_item_2, // has title and subtitle.
 				R.layout.timeline_detail,
-				cursor, from, to, 0);
+				null, from, to, 0);
 		
 		adapter.setViewBinder(new ViewBinder() {
 			
@@ -85,5 +88,24 @@ public class TimelineFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle obj) {
+		// pongo todo null para no filtrar por nada y me traiga todo.
+		return new CursorLoader(getActivity(), 
+				StatusContract.CONTENT_URI, null, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		// Se ejecuta cuando el cursor esta list y con datos.
+		// cambia el cursor del adapter y se llama swap pq tmb va a actualizar la vista.
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.swapCursor(null);
 	}
 }
