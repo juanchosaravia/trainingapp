@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditTextPreference android:key="username" android:title="@string/settings_username"/>
+    <EditTextPreference android:key="password" android:title="@string/settings_password"/>
+    <ListPreference android:entries="@array/options_refresh" android:key="menu_refresh" android:title="@string/menu_refresh" android:entryValues="@array/options_refresh_values"/>
+    
+
+</PreferenceScreen>

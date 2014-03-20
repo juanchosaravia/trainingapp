@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/menu_status_tweets" android:showAsAction="always" android:title="@string/menu_status_tweets"></item>
+
+</menu>
