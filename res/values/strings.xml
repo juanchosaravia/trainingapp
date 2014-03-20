@@ -21,6 +21,7 @@
     <string name="menu_refresh">Choose Tweets Refresh</string>
     <string name="menu_status_tweets">Responses</string>
     <string name="title_activity_preset_messages">Responses</string>
-	<string name="menu_refresh_tweets">Refresh</string>
+    <string name="menu_refresh_tweets">Refresh</string>
+    <string name="title_activity_detail_tweet">DetailTweetActivity</string>
 
 </resources>

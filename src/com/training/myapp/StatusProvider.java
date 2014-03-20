@@ -2,6 +2,7 @@ package com.training.myapp;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -9,6 +10,9 @@ import android.util.Log;
 
 public class StatusProvider extends ContentProvider {
 
+	private final static int TYPE_DIR = 10;
+	private final static int TYPE_ITEM = 20;
+	
 	DBHelper dbHelper;
 	private static final String TAG = "StatusProvider";
 	
@@ -43,10 +47,28 @@ public class StatusProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
 			String orderBy) {
+		Cursor cursor = null;
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Cursor cursor = db.query(StatusContract.TABLE, projection, selection, selectionArgs, 
-				null, null, 
-				orderBy == null ? StatusContract.ORDER_DEFAULT : orderBy);
+		
+		UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+		uriMatcher.addURI(StatusContract.AUTHORITY, "Status", TYPE_DIR);
+		uriMatcher.addURI(StatusContract.AUTHORITY, "Status/#", TYPE_ITEM);
+		
+		switch (uriMatcher.match(uri)) {
+		case TYPE_DIR:
+			cursor = db.query(StatusContract.TABLE, projection, selection, selectionArgs, 
+					null, null, 
+			orderBy == null ? StatusContract.ORDER_DEFAULT : orderBy);
+			break;
+		
+		case TYPE_ITEM:
+			String[] args = new String[] { uri.getLastPathSegment() };
+			cursor = db.query(StatusContract.TABLE, projection,
+					StatusContract.Columns.ID + "=?", 
+					args, null, null, 
+					orderBy == null ? StatusContract.ORDER_DEFAULT : orderBy);
+			break;
+		}
 		
 		return cursor;
 	}

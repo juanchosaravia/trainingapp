@@ -15,8 +15,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <provider android:name="com.training.myapp.StatusProvider"
-            android:authorities="com.intel.myapp.provider"></provider>
+        <provider
+            android:name="com.training.myapp.StatusProvider"
+            android:authorities="com.intel.myapp.provider" >
+        </provider>
+
         <activity
             android:name="com.training.myapp.StatusActivity"
             android:label="@string/app_name"
@@ -39,9 +42,14 @@
             android:name="com.training.myapp.PresetMessagesActivity"
             android:label="@string/title_activity_preset_messages" >
         </activity>
-        <service
-            android:name="com.training.myapp.FetchService">
+
+        <service android:name="com.training.myapp.FetchService" >
         </service>
+
+        <activity
+            android:name="com.training.myapp.DetailTweetActivity"
+            android:label="@string/title_activity_detail_tweet" >
+        </activity>
     </application>
 
 </manifest>

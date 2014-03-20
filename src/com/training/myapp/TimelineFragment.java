@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import com.intel.myapp.R;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -16,6 +17,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TimelineFragment extends ListFragment {
@@ -72,6 +74,14 @@ public class TimelineFragment extends ListFragment {
 		setListAdapter(adapter);
 		
 		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Intent intent = new Intent(getActivity(), DetailTweetActivity.class);
+		intent.putExtra("id", id);
+		
+		startActivity(intent);
 	}
 	
 	@Override
