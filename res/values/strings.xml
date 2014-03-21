@@ -23,5 +23,6 @@
     <string name="title_activity_preset_messages">Responses</string>
     <string name="menu_refresh_tweets">Refresh</string>
     <string name="title_activity_detail_tweet">DetailTweetActivity</string>
-
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="menu_web_view">Help</string>
 </resources>

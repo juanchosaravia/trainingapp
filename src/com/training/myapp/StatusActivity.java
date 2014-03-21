@@ -2,9 +2,13 @@ package com.training.myapp;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +29,7 @@ import com.intel.myapp.R;
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
-public class StatusActivity extends Activity {
+public class StatusActivity extends Activity implements LocationListener {
 
 	Button btn_click;
 	TextView etiqueta;
@@ -33,11 +37,16 @@ public class StatusActivity extends Activity {
 	EditText txtMessage;
 	private final int RESULT_CANNED_RESPONSE = 1;
 	private final static String TAG = "StatusActivity";
+	private Location location = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
+		
+		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		location = locationManager.getLastKnownLocation(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 50, this);
 		
 		txtChars = (TextView) findViewById(R.id.txtChars);
 		txtChars.setText("140");
@@ -130,7 +139,12 @@ public class StatusActivity extends Activity {
 			YambaClient client = new YambaClient(user, pass);
 			
 			try {
-				client.postStatus(status);
+				if(location != null) {
+					client.postStatus(status, location.getLatitude(), location.getLongitude());
+				} else {
+					client.postStatus(status);
+				}
+				
 			} catch (YambaClientException e) {
 				e.printStackTrace();
 				result = getString(R.string.msg_fail);
@@ -153,6 +167,29 @@ public class StatusActivity extends Activity {
 			StatusActivity.this.txtMessage.setText("");
 			StatusActivity.this.finish();
 		}
+	}
+
+	@Override
+	public void onLocationChanged(Location l) {
+		location = l;
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

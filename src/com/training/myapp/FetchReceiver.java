@@ -22,8 +22,10 @@ public class FetchReceiver extends BroadcastReceiver {
 		PendingIntent operation = PendingIntent.getService(
 				context, -1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
-		AlarmManager alarm = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-		alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, REFRESH_TIME, refreshTime, operation);
+		AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		
+		// Uncomment this to execute this every 15 second.
+		//alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, REFRESH_TIME, refreshTime, operation);
 	}
 
 }

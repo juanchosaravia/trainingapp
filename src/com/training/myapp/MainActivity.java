@@ -35,6 +35,10 @@ public class MainActivity extends FragmentActivity {
 			case R.id.menu_refresh:
 				startService(new Intent(this, FetchService.class));
 				break;
+				
+			case R.id.menu_web_view:
+				startActivity(new Intent(this, HelpActivity.class));
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
