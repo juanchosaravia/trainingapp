@@ -9,6 +9,7 @@ import com.intel.myapp.R;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -78,15 +79,22 @@ public class TimelineFragment extends ListFragment implements LoaderCallbacks<Cu
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent(getActivity(), DetailTweetActivity.class);
-		intent.putExtra("id", id);
 		
-		startActivity(intent);
+		if(getActivity().findViewById(R.id.fragment_detail) != null) {
+			DetailTweetFragment detailFragment = (DetailTweetFragment)getActivity().
+					getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
+			detailFragment.showDetails(id);
+			
+		} else {
+			Intent intent = new Intent(getActivity(), DetailTweetActivity.class);
+			intent.putExtra("id", id);
+			
+			startActivity(intent);
+		}
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
 
