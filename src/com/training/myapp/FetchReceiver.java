@@ -5,13 +5,17 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
 public class FetchReceiver extends BroadcastReceiver {
 
-	public static long REFRESH_TIME = 10000;
+	public static long REFRESH_TIME = 15000;
 	
 	@Override
 	public void onReceive(Context context, Intent intentParam) {
+		long refreshTime = PreferenceManager.getDefaultSharedPreferences(context).getLong("menu_refresh", REFRESH_TIME);
+		refreshTime = refreshTime * 60000;
+		
 		Intent newIntent = new Intent(context, FetchService.class);
 		context.startService(newIntent);
 		
@@ -19,7 +23,7 @@ public class FetchReceiver extends BroadcastReceiver {
 				context, -1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		AlarmManager alarm = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-		alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, REFRESH_TIME, REFRESH_TIME, operation);
+		alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, REFRESH_TIME, refreshTime, operation);
 	}
 
 }
