@@ -37,7 +37,7 @@ public class StatusActivity extends Activity implements LocationListener {
 	EditText txtMessage;
 	private final int RESULT_CANNED_RESPONSE = 1;
 	private final static String TAG = "StatusActivity";
-	private Location location = null;
+	private Location location;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
